@@ -8,10 +8,12 @@ public class MateStack<T> {
     private T[] array;
     private int size;
 
+    @SuppressWarnings("unchecked")
     public MateStack() {
         array = (T[]) new Object[DEFAULT_CAPACITY];
     }
 
+    @SuppressWarnings("unchecked")
     private void resize() {
         T[] newArray = (T[]) new Object[array.length * MULTIPLIER];
         System.arraycopy(array, 0, newArray, 0, array.length);
@@ -19,11 +21,10 @@ public class MateStack<T> {
     }
 
     public void push(T value) {
-        if (size < array.length) {
-            array[size++] = value;
-        } else {
+        if (size == array.length) {
             resize();
         }
+        array[size++] = value;
     }
 
     public T peek() {
@@ -36,8 +37,8 @@ public class MateStack<T> {
 
     public T pop() {
         if (size > 0) {
-            T value = array[size - 1];
-            size--;
+            T value = array[--size];
+            array[size] = null;
             return value;
         } else {
             throw new EmptyStackException();
